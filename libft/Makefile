@@ -6,7 +6,7 @@
 #    By: knzeng-e <knzeng-e@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/04/17 16:35:36 by knzeng-e          #+#    #+#              #
-#    Updated: 2016/05/19 14:31:30 by knzeng-e         ###   ########.fr        #
+#    Updated: 2016/05/19 14:37:12 by knzeng-e         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -114,18 +114,17 @@ $(SRC_PATH)/%.o: $(SRC_PATH)/%.c
 	@echo "Compiling $@ from $^"
 	@$(CC) $(CFLAGS) -c -o $@ $^
 
-clean : all
+clean :
 	@echo "Remove all .o files"
-	@rm -rf $(OBJ)
+	@rm -f $(OBJ)
 
 fclean : clean
 	@echo "removing $(NAME)"
-	@rm -rf $(NAME)
+	@rm -f $(NAME)
 
 norme :
 	norminette $(INC_PATH) $(SRC_PATH)
 
-re : fclean
-	@make all
+re : fclean all
 
 .PHONY : all clean fclean norme re
