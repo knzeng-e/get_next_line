@@ -1,34 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: knzeng-e <knzeng-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/22 23:12:05 by knzeng-e          #+#    #+#             */
-/*   Updated: 2016/03/22 23:15:19 by knzeng-e         ###   ########.fr       */
+/*   Created: 2016/05/26 02:24:05 by knzeng-e          #+#    #+#             */
+/*   Updated: 2016/06/01 13:20:00 by knzeng-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "get_next_line.h"
+#include <stdio.h>
 
-void	ft_putnbr_fd(int n, int fd)
+int	main(int ac, char **av)
 {
-	if (n < 0)
+	int		fd;
+	int		cpt;
+	int		ret;
+	char	*line;
+
+	line = NULL;
+	if (ac)
 	{
-		ft_putchar_fd('-', fd);
-		if (n == -2147483648)
-		{
-			n = -8;
-			ft_putnbr_fd(214748364, fd);
-		}
-		n *= -1;
+		cpt = 0;
+		fd = (ac == 1) ? 0 : open(av[1], O_RDONLY);
+		while ((ret = get_next_line(fd, &line)) > 0)
+			printf("\n%s",line);
+		//printf("\nAffichage de la line %d ==> %s", ++cpt, line);
 	}
-	if (n >= 10)
-	{
-		ft_putnbr_fd(n / 10, fd);
-		ft_putnbr_fd(n % 10, fd);
-	}
-	else
-		ft_putchar_fd(n + '0', fd);
+	return (0);
 }
