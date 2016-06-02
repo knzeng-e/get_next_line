@@ -6,7 +6,7 @@
 /*   By: knzeng-e <knzeng-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/19 17:29:38 by knzeng-e          #+#    #+#             */
-/*   Updated: 2016/06/01 19:00:41 by knzeng-e         ###   ########.fr       */
+/*   Updated: 2016/06/02 17:47:00 by knzeng-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 	{
 		*(char *)(dst + i) = *(char *)(src + i);
 		if (*(char *)(dst + i) == c)
-			return (char *)(src + (i + 1));
+			return (char *)(dst + (i + 1));
 	}
 	return (NULL);
 }
