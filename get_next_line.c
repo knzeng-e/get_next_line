@@ -6,55 +6,50 @@
 /*   By: knzeng-e <knzeng-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/25 23:46:14 by knzeng-e          #+#    #+#             */
-/*   Updated: 2016/06/02 20:18:34 by knzeng-e         ###   ########.fr       */
+/*   Updated: 2017/05/18 09:32:06 by knzeng-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
-int	remove_nl(char *line)
+int	check_new_line(char **tab, char **line)
 {
-	int	i;
+	char	*i;
 
-	i = 0;
-	while (line && line[i])
+	if ((i = ft_memchr(*tab,'\n', ft_strlen(*tab))) != NULL)
 	{
-		if (line[i] == '\n')
-		{
-			line[i] = '\0';
-			return (i);
-		}
-		i++;
+		*i = '\0';
+		*line = ft_strdup(*tab);
+		*tab +=  ft_strlen(*line) + 1;
+		return (1);
 	}
-	if (line)
-		line[i] = '\0';
-	return (i);
+	return (0);
 }
 
 int	get_next_line(int const fd, char **line)
 {
-	static char		*save = "";
+	static char	*save = "";
 	char		buf[BUFF_SIZE + 1];
-	char		*i;
-	//char		*ch;
 	int			ret;
 
-
-	if (fd < 0 || (line && (*line = NULL)))
+	if (fd < 0 || (line == NULL) || (line && (*line = NULL)))
 		return (-1);
 	ret = -1;
 	*line = ft_strnew(BUFF_SIZE);
-	while ((i = ft_memccpy(*line, save, '\n', ft_strlen(save))) == NULL && ret)
+	while ((ret = read(fd, buf, BUFF_SIZE)) || *save)
 	{
-		if (((ret = read(fd, buf, BUFF_SIZE)) == -1))
-		{
+		if (ret == -1)
 			return (ret);
-		}
 		buf[ret] = '\0';
 		save = ft_strjoin(save, buf);
-	//save = ft_strdup(ch);
+		if (check_new_line(&save, line))
+			return (READ_OK);
+		if (!ret)
+		{
+			*line = ft_strdup(save);
+			*save = '\0';
+			return (READ_OK);
+		}
 	}
-	save += 1 + remove_nl(*line);
-	return ((i != NULL) || (ft_strlen(*line) != 0));
+	return (END_OF_READ);
 }
